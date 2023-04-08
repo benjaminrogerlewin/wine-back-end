@@ -1,5 +1,5 @@
 from django.db import models
-from django.core.validators import MaxValueValidator, MinValueValidator 
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 # Create your models here.
@@ -15,12 +15,17 @@ class User(models.Model):
     
 class Wine(models.Model):
     producer = models.CharField(max_length=100)
-    vintage = models.CharField(max_length=100)
+    vintage = models.IntegerField(
+        validators=[
+            MinValueValidator(1900),
+            MaxValueValidator(2100)
+        ]
+    )
     grape = models.CharField(max_length=100)
     area = models.CharField(max_length=100)
-    image = models.CharField(max_length=100)
-    rated = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)
+    image = models.TextField()
+    rated = models.BooleanField(default=False)
+    wine_type = models.CharField(max_length=100)
 
     def __str__(self):
         return self.producer
