@@ -25,10 +25,9 @@ class RatingSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Rating
         fields = ('id', 'wine', 'wine_url', 'user', 'user_url', 'user_id', 'wine_id', 'rating', 'review', 'taste', 'notes')
-        
+
 class WineSerializer(serializers.HyperlinkedModelSerializer):
-    ratings = serializers.HyperlinkedRelatedField(
-        view_name='rating_detail',
+    ratings = RatingSerializer(
         many=True,
         read_only=True
     )
@@ -42,8 +41,8 @@ class WineSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'wine_url', 'ratings', 'producer', 'vintage', 'grape', 'area', 'image', 'rated', 'wine_type')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
-    ratings = serializers.HyperlinkedRelatedField(
-        view_name='rating_detail',
+    ratings = RatingSerializer(
+        many=True,
         read_only=True
     )
 
@@ -51,5 +50,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         view_name='user_detail'
     )
     class Meta:
-        model = Rating
+        model = User
         fields = ('id', 'user_url', 'ratings', 'username', 'email', 'password', 'location')
